@@ -1,0 +1,57 @@
+TITLE:: ToggleSwitch
+summary:: A nice little Toggle switch
+categories:: Undocumented classes
+related:: Classes/SomeRelatedClass, Reference/SomeRelatedStuff, etc.
+
+DESCRIPTION::
+A horizontal or vertical toggle switch with a label
+
+
+CLASSMETHODS::
+
+METHOD:: new
+create a new ToggleSwitch.
+
+ARGUMENT:: parent
+A parent view.
+
+ARGUMENT:: bounds
+A Rect. if width>height, a horizontal switch, otherwise vertical.
+
+ARGUMENT:: label
+A label text. For vertical swiches omit or make very short.
+
+ARGUMENT:: toggleWidth
+The size of the toggle widget.
+
+returns:: a new ToggleSwitch
+
+
+
+EXAMPLES::
+
+code::
+
+(
+FlowView.new.flow{|w|
+	w.parent.background=Color.white;
+	w.startRow;
+	w.startRow;
+	t=ToggleSwitch(w, Rect(0,0,150,18),"Toggle Me").action_({|v| v.value.postln});
+		w.startRow;
+	r=ToggleSwitch(w, Rect(0,0,18,60),"ff").action_({|v| v.value.postln});
+
+
+}
+)
+
+
+t.valueAction=1
+
+
+t.onColor_(Color.red(0.8)).refresh
+
+t.offColor_(Color.green(0.8)).refresh
+
+t.valueAction=0
+::
