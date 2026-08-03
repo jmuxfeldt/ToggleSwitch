@@ -16,8 +16,6 @@ ToggleSwitch :  SCViewHolder {
 		this.view = UserView(argParent, argBounds);
 		this.view.mouseDownAction={ arg v, x, y, modifiers, buttonNumber, clickCount;
 			this.mouseDown(x, y, modifiers, buttonNumber, clickCount)};
-		// this.keyDownAction = {arg v,char, modifiers, unicode, keycode, key;
-		// this.q_defaultKeyDownAction(  char, modifiers, unicode, keycode, key) };
 		drawRect = this.view.bounds.moveTo(0,0);
 
 		frameColor=Color.grey;
@@ -27,7 +25,6 @@ ToggleSwitch :  SCViewHolder {
 		offColor=Color.grey.alpha_(0.6);
 		view.drawFunc(this.view);
 	}
-
 
 	drawwidget{|uview|
 		var rect, localRadius,border=1,enabled=1;
@@ -41,7 +38,7 @@ ToggleSwitch :  SCViewHolder {
 		};
 
 		Pen.use {
-
+			// horizontal
 			if(rect.width>rect.height){
 				labelOffset=5;
 				Pen.font = font;
@@ -50,17 +47,16 @@ ToggleSwitch :  SCViewHolder {
 
 				toggleRect = (rect.moveBy(this.drawBounds.width-toggleWidth,0).width_(toggleWidth));
 
-			value.booleanValue.not.if{
-				Pen.circle(Rect(toggleRect.left,0,toggleRect.height,toggleRect.height).insetBy(knobInset,knobInset));
-				offColor.fill;
-			}{
-				Pen.circle(Rect(toggleRect.right-toggleRect.height,0,toggleRect.height,toggleRect.height).insetBy(knobInset,knobInset));
-				onColor.fill;
-			};
+				value.booleanValue.not.if{
+					Pen.circle(Rect(toggleRect.left,0,toggleRect.height,toggleRect.height).insetBy(knobInset,knobInset));
+					offColor.fill;
+				}{
+					Pen.circle(Rect(toggleRect.right-toggleRect.height,0,toggleRect.height,toggleRect.height).insetBy(knobInset,knobInset));
+					onColor.fill;
+				};
 
-
-			}{
-
+				}{
+				// vertical
 				Pen.font = font;
 				Pen.color_(Color.black);
 
@@ -79,17 +75,9 @@ ToggleSwitch :  SCViewHolder {
 				};
 			};
 		};
+
 		Pen.strokeColor_(frameColor);
-		Pen.roundedRect( toggleRect.insetBy( border/2,border/2 ), radius -
-			(border/2)
-		).stroke;
-/*
-		enabled.booleanValue.not.if{
-			Pen.use {
-				Pen.fillColor = Color.white.alpha_(0.5);
-				Pen.roundedRect( toggleRect, radius ).fill;
-			};
-		};*/
+		Pen.roundedRect( toggleRect.insetBy( border/2,border/2 ), radius - (border/2)).stroke;
 
 	}
 
