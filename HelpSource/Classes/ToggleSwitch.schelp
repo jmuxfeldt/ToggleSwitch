@@ -21,17 +21,31 @@ A Rect. if width>height, a horizontal switch, otherwise vertical.
 ARGUMENT:: label
 A label text. For vertical swiches omit or make very short.
 
-ARGUMENT:: toggleWidth
-The size of the toggle widget.
+ARGUMENT:: toggleSize
+The size of the toggle widget (width or height).
+
+ARGUMENT:: label2
+An optional second label on the other side of the switch.
+
+ARGUMENT:: radius
+a radius size for corners. defualts to \auto .
 
 returns:: a new ToggleSwitch
 
+METHOD:: newSquare
+a convencienc method to create a ToggleSwitch with no rouding or button inset.
 
 
-EXAMPLES::
+SECTION::Customizing
+All draw function in the class or separated into pr_myMethod methods.
+
+So you can override the methods to add in icon, e.g., if you like.
+
+SECTION::EXAMPLES
+Execute the code below to test all the features and parameters.
 
 code::
-
+// basic vertical an horiontal
 (
 FlowView.new.flow{|w|
 	w.parent.background=Color.white;
@@ -46,12 +60,51 @@ FlowView.new.flow{|w|
 )
 
 
-t.valueAction=1
+t.valueAction=1 // turn on
+
+t.onColor_(Color.red(0.8)).refresh // set on color
+
+t.offColor_(Color.green(0.8)).refresh // set off color
+
+t.valueAction=0 // turn off
+
+// two labels , square variant
+(
+FlowView.new.flow{|w|
+	w.parent.background=Color.white;
+		t=ToggleSwitch(w, Rect(0,0,150,18),"on",30,"off").action_({|v| v.value.postln});
+		w.startRow;
+		t=ToggleSwitch.newSquare(w, Rect(0,0,150,18),"off1",36,"on2");
+		w.startRow;
+		r=ToggleSwitch(w, Rect(0,0,18,80),"ff",36,"cc").action_({|v| v.value.postln});
+		w.startRow;
+		r=ToggleSwitch.newSquare(w, Rect(0,0,18,80),"ff",36,"cc").action_({|v| v.value.postln}).background_(Color.grey.alpha_(0.1));
 
 
-t.onColor_(Color.red(0.8)).refresh
+}
+)
 
-t.offColor_(Color.green(0.8)).refresh
+// a dip switches
+(
+FlowView.new.flow{|w|
+			var switches=[];
+			var n=8;
+			var bounds = Rect(0,0,120,60);
 
-t.valueAction=0
+				n.do{|k|
+					switches = switches.add(ToggleSwitch(w, Rect(0,0,bounds.width/n,bounds.height),k.asString,35));
+				};
+		w.startRow;
+		bounds = Rect(0,0,60,120);
+				n.do{|k|
+					switches = switches.add(ToggleSwitch.newSquare(w, Rect(0,0,bounds.width,bounds.height/n),k.asString,35));
+				w.startRow;
+				};
+
+
+};
+)
+
+
+
 ::

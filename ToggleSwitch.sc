@@ -1,17 +1,23 @@
 ToggleSwitch :  SCViewHolder {
 
-	var <>step, <value=0,<>font,<toggleWidth,<>labelOffset=10,<>knobInset=3,<>label,<>offColor,<>drawRect,<>action, <>onColor,<>frameColor,<>drawFunc,
+	var <>step, <value=0,<>font,<toggleSize,<>labelOffset=5,<>radius=\auto,<>knobInset=3,<>label,<>label2,<>offColor,<>drawRect,<>action, <>onColor,<>frameColor,<>drawFunc,toggleRect,
 	<>thumbSize=7;
 	var <border = 2;
 	var bgColor, <borderColor;
 
-	*new { arg parent, bounds, label,toggleWidth=40;
-		^super.new.init(parent, bounds,label,toggleWidth);
+	*new { arg parent, bounds, label,toggleSize=40,argLabel2,radius=\auto;
+		^super.new.init(parent, bounds,label,toggleSize,argLabel2,radius);
+	}
+	*newSquare { arg parent, bounds, label,toggleSize=40,argLabel2,radius=0;
+		^super.new.init(parent, bounds,label,toggleSize,argLabel2,radius).initSquare();
 	}
 
-	init { |argParent, argBounds,argLabel,argToggleWidth|
+
+	init { |argParent, argBounds,argLabel,argToggleWidth,argLabel2,argRadius|
 		label = argLabel;
-		toggleWidth=argToggleWidth;
+		label2 = argLabel2;
+		radius = argRadius;
+		toggleSize=argToggleWidth;
 		argBounds=argBounds.asRect;
 		this.view = UserView(argParent, argBounds);
 		this.view.mouseDownAction={ arg v, x, y, modifiers, buttonNumber, clickCount;
@@ -23,62 +29,132 @@ ToggleSwitch :  SCViewHolder {
 		view.drawFunc= {arg uview; drawFunc.value(uview)};
 		onColor=Color.green(0.6);
 		offColor=Color.grey.alpha_(0.6);
+		font = font? Font.default;
 		view.drawFunc(this.view);
 	}
 
+	initSquare {
+		knobInset=0;
+	}
+
 	drawwidget{|uview|
-		var rect, localRadius,border=1,enabled=1;
-		var toggleRect,radius;
-		rect = drawRect;
-		radius=12;
-		radius = rect.width.min( rect.height )  ;
-		font = font? Font.default;
-		label.isNil.if{
-			labelOffset = 0;
-		};
+		var border=1,enabled=1,labelOffset=10, rad,orientation;
+
+		orientation=(drawRect.width>drawRect.height).if{\horz}{\vert};
+		toggleRect = this.pr_calcToggleRect(orientation);
+
+		rad = this.pr_calcRadius() ;
 
 		Pen.use {
 			// horizontal
-			if(rect.width>rect.height){
-				labelOffset=5;
-				Pen.font = font;
-				Pen.color_(Color.black);
-				Pen.stringRightJustIn( label,Rect(0,0,this.drawBounds.width-toggleWidth-labelOffset,rect.height));
-
-				toggleRect = (rect.moveBy(this.drawBounds.width-toggleWidth,0).width_(toggleWidth));
-
-				value.booleanValue.not.if{
-					Pen.circle(Rect(toggleRect.left,0,toggleRect.height,toggleRect.height).insetBy(knobInset,knobInset));
-					offColor.fill;
-				}{
-					Pen.circle(Rect(toggleRect.right-toggleRect.height,0,toggleRect.height,toggleRect.height).insetBy(knobInset,knobInset));
-					onColor.fill;
-				};
-
-				}{
-				// vertical
-				Pen.font = font;
-				Pen.color_(Color.black);
-
-				toggleRect = (rect.moveBy(0,this.drawBounds.height-toggleWidth-(labelOffset*2)).height_(toggleWidth));
-				label.notNil.if{
-					Pen.stringCenteredIn( label,Rect(0,0,this.drawBounds.width,(labelOffset*2)).moveTo(0,toggleRect.bottom));
-				};
-				value.booleanValue.not.if{
-					Pen.circle(Rect(0,toggleRect.bottom-toggleRect.width,toggleRect.width,toggleRect.width).insetBy(knobInset,knobInset));
-					offColor.fill;
-
-				}{
-					Pen.circle(Rect(0,toggleRect.top,toggleRect.width,toggleRect.width).insetBy(knobInset,knobInset));
-					onColor.fill;
-
-				};
+			labelOffset=5;
+			Pen.font = font;
+			Pen.color_(Color.black);
+			label.notNil.if{
+				this.pr_drawLabel(orientation);
 			};
+			label2.notNil.if{
+				this.pr_drawLabel2(orientation);
+			};
+
+			this.pr_drawKnob(orientation,rad);
+
 		};
+		this.pr_drawFrame(orientation,rad);
 
+
+
+	}
+
+	pr_calcStringRect{|draw=\horz|
+		var horz = draw==\horz;
+		horz.if{
+			^Rect(0,0,this.drawBounds.width-toggleSize-labelOffset,drawRect.height).anchorTo((toggleRect.left-labelOffset)@toggleRect.top,\topRight);
+		}{
+			^Rect(0,0,this.drawBounds.width,min(2*(font.size?10),20)).moveTo(0,toggleRect.bottom);
+		}
+
+	}
+		pr_calcStringRect2{|draw=\horz|
+		var horz = draw==\horz;
+		horz.if{
+			^Rect(this.drawBounds.right,0,this.drawBounds.width-toggleSize-labelOffset,drawRect.height).anchorTo((toggleRect.right+labelOffset)@toggleRect.top,\topLeft);
+		}{
+			^Rect(0,this.drawBounds.top,this.drawBounds.width,min(2*(font.size?10),20)).moveTo(0,toggleRect.bottom).anchorTo(toggleRect.left@(toggleRect.top),\bottomLeft);
+		}
+
+	}
+
+
+	pr_calcToggleRect{|draw=\horz|
+		var horz = draw==\horz, moveBy;
+		moveBy = label2.isNil.if{0}{(this.drawBounds.width-toggleSize)*0.5.neg};
+		horz.if{{};
+			^drawRect.moveBy(this.drawBounds.width-toggleSize,0).width_(toggleSize).moveBy(moveBy,0);
+		}{
+			moveBy = label2.isNil.if{0}{(this.drawBounds.height-toggleSize)*0.5.neg};
+
+			^drawRect.moveBy(0,this.drawBounds.height-toggleSize-min(2*(font.size?10),20)).height_(toggleSize);
+		}
+	}
+
+	pr_togOnRect{|draw=\horz|
+		var horz = draw==\horz;
+		horz.if{
+			^Rect(toggleRect.right-toggleRect.height,0,toggleRect.height,toggleRect.height).insetBy(knobInset,knobInset);
+		}{
+			^Rect(0,toggleRect.top,toggleRect.width,toggleRect.width).insetBy(knobInset,knobInset);
+		}
+
+	}
+
+	pr_togOffRect{|draw=\horz|
+		var horz = draw==\horz;
+		horz.if{
+			^Rect(toggleRect.left,0,toggleRect.height,toggleRect.height).insetBy(knobInset,knobInset);
+		}{
+			^Rect(0,toggleRect.bottom-toggleRect.width,toggleRect.width,toggleRect.width).insetBy(knobInset,knobInset);
+		}
+
+	}
+
+	pr_calcRadius{arg defaultRad;
+		(radius==\auto).if{^drawRect.width.min( drawRect.height )}{^radius};
+	}
+
+	pr_drawLabel{
+		|draw=\horz|
+		var horz = draw==\horz;
+		horz.if{
+			Pen.stringRightJustIn( label,this.pr_calcStringRect(\horz));
+		}{
+			Pen.stringCenteredIn( label,this.pr_calcStringRect((\vert)));
+		}
+	}
+	pr_drawLabel2{
+		|draw=\horz|
+		var horz = draw==\horz;
+		horz.if{
+			Pen.stringLeftJustIn( label2,this.pr_calcStringRect2(\horz));
+		}{
+			Pen.stringCenteredIn( label2,this.pr_calcStringRect2(\vert));
+		}
+	}
+
+
+	pr_drawKnob{|orientation,rad|
+		value.booleanValue.if{
+			Pen.roundedRect(this.pr_togOnRect(orientation),rad);
+			onColor.fill;
+		}{
+			Pen.roundedRect(this.pr_togOffRect(orientation),rad);
+			offColor.fill;
+		};
+	}
+
+	pr_drawFrame{|orientation,rad|
 		Pen.strokeColor_(frameColor);
-		Pen.roundedRect( toggleRect.insetBy( border/2,border/2 ), radius - (border/2)).stroke;
-
+		Pen.roundedRect( toggleRect.insetBy( border/2,border/2 ), rad - (border/2)).stroke;
 	}
 
 	value_ { arg val;
