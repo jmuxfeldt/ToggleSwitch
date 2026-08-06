@@ -1,9 +1,7 @@
 ToggleSwitch :  SCViewHolder {
 
-	var <>step, <value=0,<>font,<toggleSize,<>labelOffset=5,<>radius=\auto,<>knobInset=3,<>label,<>label2,<>offColor,<>drawRect,<>action, <>onColor,<>frameColor,<>drawFunc,toggleRect,
-	<>thumbSize=7;
-	var <border = 2;
-	var bgColor, <borderColor;
+	var  <value=0,<>font,<toggleSize,<>labelOffset=5,<>radius=\auto,<>knobInset=3,<>label,<>label2,<>offColor,<>drawRect, <>onColor,<>frameColor,<>drawFunc,toggleRect,<>border = 2;
+	var bgColor, <>borderColor;
 
 	*new { arg parent, bounds, label,toggleSize=40,argLabel2,radius=\auto;
 		^super.new.init(parent, bounds,label,toggleSize,argLabel2,radius);
@@ -25,7 +23,7 @@ ToggleSwitch :  SCViewHolder {
 		drawRect = this.view.bounds.moveTo(0,0);
 
 		frameColor=Color.grey;
-		drawFunc = {arg uview; this.drawwidget(uview)};
+		drawFunc = {arg uview; this.drawWidget(uview)};
 		view.drawFunc= {arg uview; drawFunc.value(uview)};
 		onColor=Color.green(0.6);
 		offColor=Color.grey.alpha_(0.6);
@@ -37,7 +35,7 @@ ToggleSwitch :  SCViewHolder {
 		knobInset=0;
 	}
 
-	drawwidget{|uview|
+	drawWidget{|uview|
 		var border=1,enabled=1,labelOffset=10, rad,orientation;
 
 		orientation=(drawRect.width>drawRect.height).if{\horz}{\vert};
@@ -51,16 +49,16 @@ ToggleSwitch :  SCViewHolder {
 			Pen.font = font;
 			Pen.color_(Color.black);
 			label.notNil.if{
-				this.pr_drawLabel(orientation);
+				this.drawLabel(orientation);
 			};
 			label2.notNil.if{
-				this.pr_drawLabel2(orientation);
+				this.drawLabel2(orientation);
 			};
 
-			this.pr_drawKnob(orientation,rad);
+			this.drawKnob(orientation,rad);
 
 		};
-		this.pr_drawFrame(orientation,rad);
+		this.drawFrame(orientation,rad);
 
 
 
@@ -122,7 +120,7 @@ ToggleSwitch :  SCViewHolder {
 		(radius==\auto).if{^drawRect.width.min( drawRect.height )}{^radius};
 	}
 
-	pr_drawLabel{
+	drawLabel{
 		|draw=\horz|
 		var horz = draw==\horz;
 		horz.if{
@@ -131,7 +129,7 @@ ToggleSwitch :  SCViewHolder {
 			Pen.stringCenteredIn( label,this.pr_calcStringRect((\vert)));
 		}
 	}
-	pr_drawLabel2{
+	drawLabel2{
 		|draw=\horz|
 		var horz = draw==\horz;
 		horz.if{
@@ -142,7 +140,7 @@ ToggleSwitch :  SCViewHolder {
 	}
 
 
-	pr_drawKnob{|orientation,rad|
+	drawKnob{|orientation,rad|
 		value.booleanValue.if{
 			Pen.roundedRect(this.pr_togOnRect(orientation),rad);
 			onColor.fill;
@@ -152,7 +150,7 @@ ToggleSwitch :  SCViewHolder {
 		};
 	}
 
-	pr_drawFrame{|orientation,rad|
+	drawFrame{|orientation,rad|
 		Pen.strokeColor_(frameColor);
 		Pen.roundedRect( toggleRect.insetBy( border/2,border/2 ), rad - (border/2)).stroke;
 	}
@@ -164,11 +162,8 @@ ToggleSwitch :  SCViewHolder {
 
 	valueAction_ { arg val;
 		this.value_(val);
-		this.doAction;
+		view.action.value(this)
 	}
-
-	doAction { action.value(this) }
-
 
 	mouseDown{ arg x, y, modifiers, buttonNumber, clickCount;
 		var newVal;
