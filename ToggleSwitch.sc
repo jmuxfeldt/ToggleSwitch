@@ -6,7 +6,7 @@ ToggleSwitch :  SCViewHolder {
 		^super.new.init(parent, bounds,label,toggleSize,argLabel2,radius);
 	}
 	*newSquare { arg parent, bounds, label,toggleSize=40,argLabel2,radius=0;
-		^super.new.init(parent, bounds,label,toggleSize,argLabel2,radius).initSquare();
+		^super.new.init(parent, bounds,label,toggleSize,argLabel2,radius).knobInset_(0);
 	}
 
 
@@ -28,10 +28,6 @@ ToggleSwitch :  SCViewHolder {
 		offColor=Color.grey.alpha_(0.6);
 		font = font? Font.default;
 		view.drawFunc(this.view);
-	}
-
-	initSquare {
-		knobInset=0;
 	}
 
 	drawWidget{|uview|
