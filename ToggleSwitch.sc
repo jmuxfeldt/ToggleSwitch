@@ -1,7 +1,6 @@
 ToggleSwitch :  SCViewHolder {
 
-	var  <value=0,<>font,<toggleSize,<>labelOffset=5,<>radius=\auto,<>knobInset=3,<>label,<>label2,<>offColor,<>drawRect, <>onColor,<>frameColor,<>drawFunc,toggleRect,<>border = 2;
-	var bgColor, <>borderColor;
+	var  <value=0,<>font,<toggleSize,<>labelOffset=5,<>radius=\auto,<>knobInset=3,<>label,<>label2,<>offColor,<>drawRect, <>onColor,<>borderColor,<>drawFunc,toggleRect,<>border = 2;
 
 	*new { arg parent, bounds, label,toggleSize=40,argLabel2,radius=\auto;
 		^super.new.init(parent, bounds,label,toggleSize,argLabel2,radius);
@@ -22,7 +21,7 @@ ToggleSwitch :  SCViewHolder {
 			this.mouseDown(x, y, modifiers, buttonNumber, clickCount)};
 		drawRect = this.view.bounds.moveTo(0,0);
 
-		frameColor=Color.grey;
+		borderColor=Color.grey;
 		drawFunc = {arg uview; this.drawWidget(uview)};
 		view.drawFunc= {arg uview; drawFunc.value(uview)};
 		onColor=Color.green(0.6);
@@ -129,6 +128,7 @@ ToggleSwitch :  SCViewHolder {
 			Pen.stringCenteredIn( label,this.pr_calcStringRect((\vert)));
 		}
 	}
+
 	drawLabel2{
 		|draw=\horz|
 		var horz = draw==\horz;
@@ -138,7 +138,6 @@ ToggleSwitch :  SCViewHolder {
 			Pen.stringCenteredIn( label2,this.pr_calcStringRect2(\vert));
 		}
 	}
-
 
 	drawKnob{|orientation,rad|
 		value.booleanValue.if{
@@ -151,7 +150,7 @@ ToggleSwitch :  SCViewHolder {
 	}
 
 	drawFrame{|orientation,rad|
-		Pen.strokeColor_(frameColor);
+		Pen.strokeColor_(borderColor);
 		Pen.roundedRect( toggleRect.insetBy( border/2,border/2 ), rad - (border/2)).stroke;
 	}
 
