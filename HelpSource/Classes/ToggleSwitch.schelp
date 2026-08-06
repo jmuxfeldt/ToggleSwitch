@@ -1,7 +1,7 @@
 TITLE:: ToggleSwitch
 summary:: A nice little Toggle switch
-categories:: Undocumented classes
-related:: Classes/SomeRelatedClass, Reference/SomeRelatedStuff, etc.
+categories:: GUI>Views, GUI>EZ-GUI
+related:: Classes/Button, Classes/SCViewHolder
 
 DESCRIPTION::
 A horizontal or vertical toggle switch with a label
@@ -84,7 +84,7 @@ FlowView.new.flow{|w|
 }
 )
 
-// a dip switches
+// dip switches
 (
 FlowView.new.flow{|w|
 			var switches=[];
