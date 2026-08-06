@@ -6,7 +6,6 @@ related:: Classes/Button, Classes/SCViewHolder
 DESCRIPTION::
 A horizontal or vertical toggle switch with a label
 
-
 CLASSMETHODS::
 
 METHOD:: new
@@ -34,10 +33,56 @@ returns:: a new ToggleSwitch
 
 METHOD:: newSquare
 a convencienc method to create a ToggleSwitch with no rouding or button inset.
+returns:: a new ToggleSwitch
 
+INSTANCEMETHODS::
+All of the setter  methods except value and valueAction need you to do myInstance.view.refresh after setting the value;
+
+METHOD:: value
+METHOD:: valueAction_
+set the value adm preform the action
+
+METHOD:: border
+METHOD:: borderColor
+METHOD:: knobInset
+METHOD:: label
+METHOD:: label2
+METHOD:: onColor
+METHOD:: offColor
+METHOD:: borderColor
+METHOD:: radius
+METHOD:: offColor
+METHOD:: font
+METHOD:: frameColor
+METHOD:: labelOffset
+METHOD:: toggleSize
+METHOD:: drawFunc
+METHOD:: drawFrame
+METHOD:: drawKnob
+METHOD:: drawLabel
+METHOD:: drawLabel2
+METHOD:: drawWidget
+
+
+
+PRIVATE:: pr_calcRadius(defaultRad)
+PRIVATE:: pr_calcStringRect
+PRIVATE:: pr_calcStringRect2
+PRIVATE:: pr_calcToggleRect
+PRIVATE:: pr_togOffRect
+PRIVATE:: pr_togOnRect
+PRIVATE:: init
+PRIVATE:: initSquare
+PRIVATE:: mouseDown
+PRIVATE:: init
+PRIVATE:: initSquare
+PRIVATE:: initSquare
+PRIVATE:: initSquare
+PRIVATE:: drawRect
+PRIVATE:: pr_calcRadius
 
 SECTION::Customizing
-All draw function in the class or separated into pr_myMethod methods.
+All draw function in the class or separated into drawMyMethod methods.
 
 So you can override the methods to add in icon, e.g., if you like.
 
