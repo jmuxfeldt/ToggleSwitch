@@ -1,6 +1,6 @@
 TITLE:: ToggleSwitch
 summary:: A nice little Toggle switch
-categories:: GUI>Views, GUI>EZ-GUI
+categories:: GUI>Views
 related:: Classes/Button, Classes/SCViewHolder
 
 DESCRIPTION::
