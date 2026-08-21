@@ -35,11 +35,22 @@ METHOD:: newSquare
 a convencienc method to create a ToggleSwitch with no rouding or button inset.
 returns:: a new ToggleSwitch
 
+METHOD:: defaultOnColor
+default:Color.green(0.6);
+
+override individually with onColor
+
+METHOD:: defaultOffColor
+default: Color.grey.alpha_(0.6);
+
+override individually with offColor
+
+
 INSTANCEMETHODS::
 All of the setter  methods except value and valueAction need you to do myInstance.view.refresh after setting the value;
 
 METHOD:: value
-METHOD:: valueAction_
+METHOD:: valueAction
 set the value adm preform the action
 
 METHOD:: border
@@ -106,9 +117,9 @@ FlowView.new.flow{|w|
 
 t.valueAction=1 // turn on
 
-t.onColor_(Color.red(0.8)).refresh // set on color
+t.onColor_(Color.red(0.9)).refresh // set on color
 
-t.offColor_(Color.green(0.8)).refresh // set off color
+t.offColor_(Color.black).refresh // set off color
 
 t.valueAction=0 // turn off
 
