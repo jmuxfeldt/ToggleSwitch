@@ -3,9 +3,9 @@
 	\path: 		"ToggleSwitch",
 	\summary:	" A nice ToggleSwitch. \nCross GUI Platform\nfor SC >=3.3",
 	\author: 		"Jost Muxfeldt",
-	\version:		1.00,  // must be a float
+	\version:		"1.0.1",
 	\helpdoc: 		"ToggleSwitch.schelp",
-	\url:           "http://www.glyph.de",
+	\url:           "https://github.com/jmuxfeldt/ToggleSwitch",
 	\schelp:        "ToggleSwitch"
 
 )
