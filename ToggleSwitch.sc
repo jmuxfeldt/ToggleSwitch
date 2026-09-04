@@ -1,20 +1,20 @@
 ToggleSwitch :  SCViewHolder {
     classvar >defaultOnColor, >defaultOffColor;
-    var  <value=0,<>font,<toggleSize,<>labelOffset=5,<>radius=\auto,<>knobInset=3,<>label,<>label2,<>offColor,<>drawRect, <>onColor,<>borderColor,<>drawFunc,toggleRect,<>border = 2;
+    var  <value=0,>font,toggleSize,>labelOffset=5,>radius=\auto,>knobInset=3,>label,>label2,labelColor,>offColor,<>drawRect, >onColor,>borderColor,<>drawFunc,toggleRect,>border = 2;
     *initClass{
         defaultOnColor=Color.green(0.6);
         defaultOffColor=Color.grey.alpha_(0.6);
     }
 
-    *new { arg parent, bounds, label,toggleSize=40,argLabel2,radius=\auto;
-        ^super.new.init(parent, bounds,label,toggleSize,argLabel2,radius);
+    *new { arg parent, bounds, label,toggleSize=40,argLabel2,radius=\auto,labelColor;
+        ^super.new.init(parent, bounds,label,toggleSize,argLabel2,radius,labelColor);
     }
-    *newSquare { arg parent, bounds, label,toggleSize=40,argLabel2,radius=0;
-        ^super.new.init(parent, bounds,label,toggleSize,argLabel2,radius).knobInset_(0);
+    *newSquare { arg parent, bounds, label,toggleSize=40,argLabel2,radius=0,labelColor;
+        ^super.new.init(parent, bounds,label,toggleSize,argLabel2,radius,labelColor).knobInset_(0);
     }
 
 
-    init { |argParent, argBounds,argLabel,argToggleWidth,argLabel2,argRadius|
+    init { |argParent, argBounds,argLabel,argToggleWidth,argLabel2,argRadius,argLabelColor|
         label = argLabel;
         label2 = argLabel2;
         radius = argRadius;
@@ -30,6 +30,7 @@ ToggleSwitch :  SCViewHolder {
         view.drawFunc= {arg uview; drawFunc.value(uview)};
         onColor=onColor?defaultOnColor;
         offColor=offColor?defaultOffColor;
+        labelColor=argLabelColor?Color.black;
         font = font? Font.default;
         view.drawFunc(this.view);
     }
@@ -46,7 +47,7 @@ ToggleSwitch :  SCViewHolder {
             // horizontal
             labelOffset=5;
             Pen.font = font;
-            Pen.color_(Color.black);
+            Pen.color_(labelColor);
             label.notNil.if{
                 this.drawLabel(orientation);
             };

@@ -3,7 +3,7 @@
 	\path: 		"ToggleSwitch",
 	\summary:	" A nice ToggleSwitch. \nCross GUI Platform\nfor SC >=3.3",
 	\author: 		"Jost Muxfeldt",
-	\version:		"1.0.1",
+	\version:		"1.0.2",
 	\helpdoc: 		"ToggleSwitch.schelp",
 	\url:           "https://github.com/jmuxfeldt/ToggleSwitch",
 	\schelp:        "ToggleSwitch"

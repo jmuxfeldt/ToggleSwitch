@@ -58,6 +58,7 @@ METHOD:: borderColor
 METHOD:: knobInset
 METHOD:: label
 METHOD:: label2
+METHOD:: labelColor
 METHOD:: onColor
 METHOD:: offColor
 METHOD:: borderColor
